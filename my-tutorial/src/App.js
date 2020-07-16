@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import classes from './App.css';
-import Person from './Person';
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
+import './App.css';
+import Radium, { StyleRoot } from 'radium';
+import Person from './Person/Person';
 
 class App extends Component {
   state = {
@@ -46,47 +46,64 @@ class App extends Component {
   }
 
   render () {
+    const style = {
+      backgroundColor: 'green',
+      color: 'white',
+      font: 'inherit',
+      border: '1px solid blue',
+      padding: '8px',
+      cursor: 'pointer',
+      ':hover': {
+        backgroundColor: 'lightgreen',
+        color: 'black'
+      }
+    };
+
     let persons = null;
-    let btnClass = '';
 
     if ( this.state.showPersons ) {
       persons = (
         <div>
           {this.state.persons.map( ( person, index ) => {
-            return <ErrorBoundary key={person.id}>
-              <Person
-                click={() => this.deletePersonHandler( index )}
-                name={person.name}
-                age={person.age}
-                changed={( event ) => this.nameChangedHandler( event, person.id )} />
-            </ ErrorBoundary>
+            return <Person
+              click={() => this.deletePersonHandler( index )}
+              name={person.name}
+              age={person.age}
+              key={person.id}
+              changed={( event ) => this.nameChangedHandler( event, person.id )} />
           } )}
         </div>
       );
 
-      btnClass = classes.Red;
+      style.backgroundColor = 'red';
+      style[':hover'] = {
+        backgroundColor: 'salmon',
+        color: 'black'
+      };
     }
 
-    const assignedClasses = [];
+    const classes = [];
     if ( this.state.persons.length <= 2 ) {
-      assignedClasses.push( classes.red ); // classes = ['red']
+      classes.push( 'red' ); // classes = ['red']
     }
     if ( this.state.persons.length <= 1 ) {
-      assignedClasses.push( classes.bold ); // classes = ['red', 'bold']
+      classes.push( 'bold' ); // classes = ['red', 'bold']
     }
 
     return (
-      <div className={classes.App}>
-        <h1>Hi, I'm a React App</h1>
-        <p className={assignedClasses.join( ' ' )}>This is really working!</p>
-        <button
-          className={btnClass}
-          onClick={this.togglePersonsHandler}>Toggle Persons</button>
-        {persons}
-      </div>
+      <StyleRoot>
+        <div className="App">
+          <h1>Hi, I'm a React App</h1>
+          <p className={classes.join( ' ' )}>This is really working!</p>
+          <button
+            style={style}
+            onClick={this.togglePersonsHandler}>Toggle Persons</button>
+          {persons}
+        </div>
+      </StyleRoot>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
   }
 }
 
-export default App;
+export default Radium( App );
