@@ -6,6 +6,8 @@ import BurgerBuilder from '../../Containers/BurgerBuilder/BurgerBuilder';
 
 const burger = (props) => {
 
+    
+
     //Turns objects into arrays and shows hany of them are in need to build.
     let transformedingredient = Object.keys(props.ingredients).map(igKey => {
         return [...Array(props.ingredients[igKey])].map((_, i) =>
