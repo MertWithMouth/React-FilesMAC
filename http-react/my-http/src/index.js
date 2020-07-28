@@ -6,7 +6,7 @@ import axios from 'axios';
 import registerServiceWorker from './registerServiceWorker';
 
 //optimization for the axios url
-axios.defaults.baseURL='https://jsonplaceholder.typicode.com';
+//axios.defaults.baseURL='https://jsonplaceholder.typicode.com';
 axios.defaults.headers.common['Authorization'] ='AUTH TOKEN';
 //default anyways
 axios.defaults.headers.post['Content-Type'] ='application/json';
