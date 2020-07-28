@@ -11,8 +11,9 @@ class Blog extends Component {
 
     state={
         posts:[],
-        selectedPostID:null
-    }
+        selectedPostID:null,
+        error:false
+    };
 
 
     clickHandler=(id)=>{
@@ -21,6 +22,8 @@ class Blog extends Component {
 
 
     }
+
+    
 
     componentDidMount(){
         axios.get('https://jsonplaceholder.typicode.com/posts')
@@ -34,17 +37,23 @@ class Blog extends Component {
             })
             this.setState({posts: updatedPost})
             console.log(response)
-        });
+        }).catch(error  =>   {
+            this.setState({error: true})
+        })
+        
+        }
 
-    }
+
     render () {
-        const posts=this.state.posts.map(post=>{
+        let posts =<p style={{textAlign: 'center'}}>Something Went Wrong!</p>
+        if(!this.state.error)
+       { posts=this.state.posts.map(post=>{
             return <Post 
             author={post.author}
              key={post.id}
               title={post.title}
               clicked={()=>this.clickHandler(post.id)}/>
-        })
+        })}
         return (
             <div>
                 <section className="Posts">
